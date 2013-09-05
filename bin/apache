@@ -1,0 +1,2 @@
+#!/bin/bash
+httpd -d $OPENSHIFT_DATA_DIR/lib/httpd -c "Listen $OPENSHIFT_DIY_IP:$OPENSHIFT_DIY_PORT" -c "DocumentRoot $1" -c "ServerName $C9_PROJECT.$C9_USER.c9.io" -X

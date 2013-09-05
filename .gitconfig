@@ -1,0 +1,8 @@
+[user]
+    name = 
+    email = fabiofurlan@iol.it
+[core]
+    askpass = /bin/echo
+    editor = nano
+[color]
+    ui = true

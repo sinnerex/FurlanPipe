@@ -1,0 +1,25 @@
+[Sun Jun 24 17:12:25 2012] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:libra_t:s0:c1,c16
+[Sun Jun 24 17:12:25 2012] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sun Jun 24 17:14:30 2012] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:libra_t:s0:c1,c16
+[Sun Jun 24 17:14:30 2012] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sun Jun 24 17:14:48 2012] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:libra_t:s0:c1,c16
+[Sun Jun 24 17:14:48 2012] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sun Jun 24 17:14:48 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Jun 24 17:14:48 2012] [notice] Digest: done
+[Sun Jun 24 17:16:37 2012] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:libra_t:s0:c1,c16
+[Sun Jun 24 17:16:37 2012] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sun Jun 24 17:16:37 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Jun 24 17:16:37 2012] [notice] Digest: done
+[Sun Jun 24 17:16:37 2012] [warn] pid file httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sun Jun 24 17:17:08 2012] [error] [client 127.2.7.1] File does not exist: /var/lib/stickshift/77ef5615d3b44e4d827232770d3316d7/app-root/data/1/favicon.ico
+[Sun Jun 24 17:17:35 2012] [error] [client 127.2.7.1] File does not exist: /var/lib/stickshift/77ef5615d3b44e4d827232770d3316d7/app-root/data/1/favicon.ico
+[Sun Jun 24 17:18:22 2012] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:libra_t:s0:c1,c16
+[Sun Jun 24 17:18:22 2012] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sun Jun 24 17:18:22 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Jun 24 17:18:22 2012] [notice] Digest: done
+[Sun Jun 24 17:18:22 2012] [warn] pid file /var/lib/stickshift/77ef5615d3b44e4d827232770d3316d7/app-root/data/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Sep 05 11:23:35 2013] [notice] SELinux policy enabled; httpd running as context unconfined_u:system_r:openshift_t:s0:c1,c242
+[Thu Sep 05 11:23:35 2013] [notice] suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Thu Sep 05 11:23:35 2013] [notice] Digest: generating secret for digest authentication ...
+[Thu Sep 05 11:23:35 2013] [notice] Digest: done
+[Thu Sep 05 11:23:36 2013] [warn] pid file /var/lib/openshift/52288aec5973ca25ab000114/app-root/data//lib/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?

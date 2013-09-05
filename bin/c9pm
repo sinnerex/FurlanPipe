@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+C9PM="node $HOME/.c9/cache/c9pm/bin/c9pm.js"
+NADA="$HOME/.c9/cache/nada-nix/nada-nix"
+
+IGNORED="python27|python33|php5|git|perl|python33|clojure|postgres|pip|lua|dropbox"
+
+if [ -e $NADA ] && [ "`find $(dirname $NADA) -mmin +120`" == "" ] && [ "$1" != "listall" ]; then
+  $NADA "$@"
+  exit
+fi
+
+echo -n "Updating nada-nix "
+mkdir -p ~/.c9/cache
+cd ~/.c9/cache
+if [ -e c9pm ]; then
+  (cd c9pm; git pull -q)
+else
+  git clone -q git://github.com/c9/c9pm.git
+fi
+if [ -e nada-nix ]; then
+  (cd nada-nix; git pull -q)
+else
+  git clone -q git://github.com/c9/nada-nix.git
+fi
+echo -n $'\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+echo -n "                  "
+echo -n $'\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+
+if [ "$1" == "listall" ]; then
+  $C9PM "$@" &> /tmp/.c9pm-out || (cat /tmp/.c9pm-out && exit 1)
+  $NADA "$@" &> /tmp/.nada-out || (cat /tmp/.nada-out && exit 1)
+  ( cat /tmp/.nada-out &&
+   for L in `cat /tmp/.c9pm-out`; do
+     if ! echo $L | grep -E "$IGNORED" > /dev/null; then
+       echo $L
+     fi
+   done
+  ) | sort | uniq
+  exit
+fi
+
+if [ "$1" == "install" ]; then
+  if ! $NADA list | grep -q "$@" && $C9PM "$@" &> /tmp/.c9pm-out; then
+    cat /tmp/.c9pm-out 2>/dev/null || :
+    echo $'\n\n'Legacy c9pm package $2 installed
+    exit
+  fi
+  $NADA "$@"
+  exit
+fi
+
+$NADA "$@"

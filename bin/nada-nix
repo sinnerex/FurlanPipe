@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+NADA="$HOME/.c9/cache/nada-nix/nada-nix"
+
+if [ "$1" == "--noupdate" ]; then
+  shift
+  if [ -e $NADA ]; then
+    $NADA "$@"
+  fi
+  exit
+fi
+
+if [ -e $NADA ] && [ "`find $(dirname $NADA) -mmin +120`" == "" ]; then
+  $NADA "$@"
+  exit
+fi
+
+echo -n "Updating nada-nix "
+mkdir -p ~/.c9/cache
+cd ~/.c9/cache
+if [ -e nada-nix ]; then
+  (cd nada-nix; git pull -q)
+else
+  git clone -q git://github.com/c9/nada-nix.git
+fi
+echo -n $'\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+echo -n "                  "
+echo -n $'\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+
+$NADA "$@"

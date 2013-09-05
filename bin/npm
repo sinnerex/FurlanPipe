@@ -1,0 +1,2 @@
+#!/bin/bash
+HOME=$OPENSHIFT_DATA_DIR /usr/libexec/openshift/cartridges/c9-0.1/root/lib/node_modules/npm/bin/npm-cli.js "$@"

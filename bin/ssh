@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# we need to create ssh/config file but only
+# if doesn't exist (don't overwrite our nice users config files)
+CONFIG=$OPENSHIFT_DATA_DIR/.ssh/config
+[[ ! -e "$CONFIG" ]] && touch $CONFIG
+
+HOME=$OPENSHIFT_DATA_DIR /usr/bin/ssh -F $OPENSHIFT_DATA_DIR/.ssh/config -i $OPENSHIFT_DATA_DIR/.ssh/id_rsa -o StrictHostKeyChecking=no -o UserKnownHostsFile=$OPENSHIFT_DATA_DIR/.ssh/known_hosts "$@"

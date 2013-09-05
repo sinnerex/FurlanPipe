@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PORT=$OPENSHIFT_DIY_PORT IP=$OPENSHIFT_DIY_IP HOME=$OPENSHIFT_DATA_DIR /usr/libexec/openshift/cartridges/c9-0.1/root/bin/node-openshift-v10 "$@"

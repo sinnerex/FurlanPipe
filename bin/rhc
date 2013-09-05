@@ -1,0 +1,5 @@
+#!/bin/bash
+SHARED_ROOT=/usr/libexec/openshift/cartridges/c9-0.1/root
+GEM_HOME=$SHARED_ROOT/lib/ruby/gems
+RHC_BIN=$GEM_HOME/bin/rhc
+GEM_HOME=$GEM_HOME GEM_PATH=/usr/lib/ruby/gems/1.8:$GEM_HOME LD_LIBRARY_PATH=/opt/rh/ruby193/root/usr/lib64 $RHC_BIN "$@"

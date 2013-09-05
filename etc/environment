@@ -1,0 +1,164 @@
+export HOME="/var/lib/stickshift/52288aec5973ca25ab000114/app-root/data"
+export PATH="$HOME/.nada-nix-profile/bin:$HOME/604350/node_modules/.bin:$HOME/bin:$HOME/lib/ruby/gems/bin:/opt/rh/ruby193/root/usr/bin:/sbin:/usr/sbin:/bin:/usr/bin"
+export GIT_SSH="$HOME/bin/ssh"
+export HGUSER=""
+export EMAIL="fabiofurlan@iol.it"
+export EDITOR=""
+export NODE_PATH="$HOME/lib/node_modules"
+export PORT="8080"
+export C9_PORT="8080"
+export IP="$OPENSHIFT_DIY_IP"
+export GEM_HOME="$HOME/lib/ruby/gems"
+export GEM_PATH="$HOME/lib/ruby/gems:/opt/rh/ruby193/root/usr/share/gems:/usr/lib/ruby/gems/1.8"
+export LD_LIBRARY_PATH="/opt/rh/ruby193/root/usr/lib64"
+export MANPATH="/opt/rh/ruby193/root/usr/share/man"
+export PYTHONPATH="$HOME/.nada-nix-profile/lib/python3.3/site-packages:$HOME/.nada-nix-profile/lib/python/site-packages:$HOME/lib/python/site-packages:/usr/libexec/openshift/cartridges/c9-0.1/root/python2.6.6/site-packages:/usr/lib64/python2.6/site-packages"
+export LC_ALL="$LANG"
+export C9_USER="sinnerex"
+export C9_PROJECT="wordpress"
+export C9_PID="604350"
+export C9_SHARED="/usr/libexec/openshift/cartridges/c9-0.1/root"
+ruby193_bin=/opt/rh/ruby193/root/usr/bin
+
+ruby187() {
+    PATH=${PATH/$ruby193_bin:/}
+    export PATH=$PATH
+    export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | sed -E 's!/opt/rh/ruby193/root/usr/lib64:!!'`
+    export MANPATH=
+}
+
+ruby193() {
+    PATH=${PATH/$ruby193_bin:/}
+    export PATH="/opt/rh/ruby193/root/usr/bin":$PATH
+    export LD_LIBRARY_PATH="/opt/rh/ruby193/root/usr/lib64:$LD_LIBRARY_PATH";
+    export MANPATH="/opt/rh/ruby193/root/usr/share/man";
+}
+
+if ! [ -d ~/.rvm ]; then
+
+rvm() {
+    ERR="Local rvm only supports the following commands:\n\n
+  rvm use 1.8.7\n
+  rvm use 1.9.3"
+    if [ "$#" != 2 ] || [ "$1" != "use" ]; then
+        echo -e $ERR >&2
+        return
+    fi
+    if [ "$2" == "1.8" ] || [ "$2" == "1.8.7" ]; then
+        ruby187
+        echo "Using ruby 1.8.7"
+    elif [ "$2" == "1.9" ] || [ "$2" == "1.9.3" ]; then
+        ruby193
+        echo "Using ruby 1.9.3"
+    else
+        echo -e $ERR >&2
+    fi
+}
+
+else
+    # Fix for https://github.com/ajaxorg/cloud9infra/issues/2600
+    rvm_bin=$HOME/.rvm/bin
+    PATH=${PATH/:$rvm_bin/}
+    export PATH=$PATH:$rvm_bin
+    [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+fi
+
+nvm() {
+    ERR="Local nvm only supports the following commands:\n\n
+  nvm use v0.6\n
+  nvm use v0.8\n
+  nvm use v0.10"
+    if which nvm >/dev/null 2>/dev/null; then
+        command nvm "$@"
+    elif [ "$1" != "use" ]; then
+        echo -e $ERR >&2
+    elif echo "$2" | grep -E '^v?0.6.*' >/dev/null; then
+        sed -i"" ~/bin/node -e 's/node-openshift.* /node-openshift /'
+        echo Switched to `node --version`
+    elif echo "$2" | grep -E '^v?0.8.*' >/dev/null; then
+        sed -i"" ~/bin/node -e 's/node-openshift.* /node-openshift-v8 /'
+        echo Switched to `node --version`
+    elif echo "$2" | grep -E '^v?0.10.*' >/dev/null; then
+        sed -i"" ~/bin/node -e 's/node-openshift.* /node-openshift-v10 /'
+        echo Switched to `node --version`
+    else
+        echo Node version not supported. >&2
+    fi
+}
+
+screen() {
+  echo Sorry, screen is not supported. Try tmux instead\!
+  echo >&2
+}
+
+open() {
+    local PARENT_DIR=$(dirname "$1")
+    cd "$PARENT_DIR"
+    local ABS_PATH="$(pwd)"/"$(basename $1)"
+    cd - >/dev/null
+    # Interpreted on the client
+    echo "[[ c9: open $ABS_PATH ]]"
+}
+
+edit() {
+    local PARENT_DIR=$(dirname "$1")
+    cd "$PARENT_DIR"
+    local ABS_PATH="$(pwd)"/"$(basename $1)"
+    cd - >/dev/null
+    # Interpreted on the client
+    echo "[[ c9: open $ABS_PATH ]]"
+}
+
+aptget() {
+	echo "Sorry, apt-get is not supported on this system. Try c9pm instead."
+}
+alias apt-get=aptget # apt-get is a bash-only function name
+
+yum() {
+	echo "Sorry, yum is not supported on this system. Try c9pm instead."
+}
+
+brew() {
+	echo "Sorry, brew is not supported on this system. Try c9pm instead."
+}
+
+mysql() {
+	if [ "$*" == "" ]; then
+		mysql-ctl cli
+	else
+		command mysql "$@"
+	fi
+}
+
+alias mysqldump="mysqldump --user=$C9_USER --host=$IP"
+alias mvn="mvn -Duser.home=$HOME"
+
+export -f rvm ruby187 ruby193 nvm screen open edit yum brew mysql
+
+# Setup C9_PID, config dir
+mkdir -p ~/.c9
+if [ "$C9_PID" ]; then
+  : # Common case, when running from Cloud9
+elif [ -e ~/.c9/last-pid ]; then
+  C9_PID=`cat ~/.c9/last-pid`
+else
+  C9_PID=`ls ~/[0-9]* | head -1`
+fi
+echo "$C9_PID" > ~/.c9/last-pid
+mkdir -p ~/.c9/$C9_PID
+
+# Setup nada-nix
+export NADA_NIX_PROFILE=~/.nada-nix-profile
+export NADA_NIX_EXPR=~/$C9_PID/c9/packages
+export PATH=~/.nix-profile/bin:~/.nada-nix-profile/bin:`ls -d /nix/store/*-lftp-4.4.5 | head -1`/bin:$PATH
+
+# Setup Meteor
+export METEOR_IP=$IP
+export METEOR_INNER_IP=$IP
+export METEOR_PORT=$PORT
+export METEOR_INNER_PORT=16022
+export METEOR_MONGO_PORT=16023
+
+# have a file that is not synced through the project template so we can have stuff in there
+[[ -s "$HOME/etc/.bashrc" ]] && source $HOME/etc/.bashrc
+
